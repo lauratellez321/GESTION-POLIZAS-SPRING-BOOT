@@ -2,6 +2,7 @@ package com.ejemplo.polizas.core;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -12,11 +13,13 @@ public class HttpCoreGateway implements CoreGateway {
     private final RestClient client;
 
     public HttpCoreGateway(
-            @Value("${app.core-url}") String baseUrl, @Value("${app.api-key}") String apiKey) {
+            @Value("${app.core-url}") @NonNull String baseUrl,
+            @Value("${app.api-key}") @NonNull String apiKey) {
         client = RestClient.builder().baseUrl(baseUrl).defaultHeader("x-api-key", apiKey).build();
     }
 
     @Override
+    @SuppressWarnings("null")
     public void enviarActualizacion(Long polizaId) {
         client.post()
                 .uri("/core-mock/evento")

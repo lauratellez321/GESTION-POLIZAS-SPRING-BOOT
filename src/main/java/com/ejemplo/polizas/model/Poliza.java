@@ -106,6 +106,6 @@ public class Poliza {
 
     public void cancelar() {
         estado = EstadoPoliza.CANCELADA;
-        riesgos.forEach(Riesgo::cancelar);
+        for (Riesgo riesgo : riesgos) riesgo.cancelar();
     }
 }

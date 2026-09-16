@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -23,7 +24,9 @@ public class ApiExceptionHandler {
         return respuesta(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    @SuppressWarnings("null")
     private ResponseEntity<Map<String, String>> respuesta(HttpStatus status, String mensaje) {
-        return ResponseEntity.status(status).body(Map.of("error", mensaje));
+        return ResponseEntity.status(status)
+                .body(Map.of("error", Objects.toString(mensaje, "Solicitud inválida")));
     }
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.http.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,7 +18,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain chain)
             throws ServletException, IOException {
         if (!apiKey.equals(request.getHeader("x-api-key"))) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

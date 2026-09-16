@@ -83,6 +83,7 @@ public class PolizaService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public RiesgoDto cancelarRiesgo(Long id) {
         Riesgo riesgo =
                 riesgos.findById(id)
@@ -94,6 +95,7 @@ public class PolizaService {
         return RiesgoDto.of(riesgo);
     }
 
+    @SuppressWarnings("null")
     private Poliza buscarPoliza(Long id) {
         return polizas.findById(id)
                 .orElseThrow(() -> new NoEncontradoException("Póliza no encontrada"));
