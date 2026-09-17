@@ -19,6 +19,17 @@ public class PolizaController {
         this.service = service;
     }
 
+    @PostMapping("/polizas")
+    public ResponseEntity<PolizaDto> crear(@Valid @RequestBody CrearPolizaRequest body) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        service.crear(
+                                body.tipo(),
+                                body.canonMensual(),
+                                body.inicioVigencia(),
+                                body.mesesVigencia()));
+    }
+
     @GetMapping("/polizas")
     public List<PolizaDto> listar(
             @RequestParam(required = false) TipoPoliza tipo,

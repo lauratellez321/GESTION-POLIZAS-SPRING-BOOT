@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +34,16 @@ public class PolizaService {
         if (estado != null)
             filtro = filtro.and((root, query, cb) -> cb.equal(root.get("estado"), estado));
         return polizas.findAll(filtro).stream().map(PolizaDto::of).toList();
+    }
+
+    @Transactional
+    public PolizaDto crear(
+            TipoPoliza tipo,
+            BigDecimal canonMensual,
+            LocalDate inicioVigencia,
+            Integer mesesVigencia) {
+        Poliza poliza = new Poliza(tipo, canonMensual, inicioVigencia, mesesVigencia);
+        return PolizaDto.of(polizas.save(poliza));
     }
 
     @Transactional(readOnly = true)

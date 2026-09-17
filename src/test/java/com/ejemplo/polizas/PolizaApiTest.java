@@ -27,6 +27,38 @@ class PolizaApiTest {
     }
 
     @Test
+    void creaPolizaConLosDatosDeVigencia() throws Exception {
+        mvc.perform(
+                        post("/polizas")
+                                .header("x-api-key", "123456")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                        {
+                                          "tipo": "INDIVIDUAL",
+                                          "canonMensual": 1500000.00,
+                                          "inicioVigencia": "2026-03-01",
+                                          "mesesVigencia": 12
+                                        }
+                                        """))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.tipo").value("INDIVIDUAL"))
+                .andExpect(jsonPath("$.estado").value("VIGENTE"))
+                .andExpect(jsonPath("$.prima").value(18000000.00))
+                .andExpect(jsonPath("$.finVigencia").value("2027-02-28"));
+    }
+
+    @Test
+    void validaLosDatosObligatoriosAlCrearPoliza() throws Exception {
+        mvc.perform(
+                        post("/polizas")
+                                .header("x-api-key", "123456")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"tipo\":\"COLECTIVA\",\"mesesVigencia\":0}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void filtraYRenuevaConIpc() throws Exception {
         mvc.perform(get("/polizas").header("x-api-key", "123456").param("tipo", "COLECTIVA"))
                 .andExpect(status().isOk())
