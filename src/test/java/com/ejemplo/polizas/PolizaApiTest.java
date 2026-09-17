@@ -57,6 +57,17 @@ class PolizaApiTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"tipo\":\"COLECTIVA\",\"mesesVigencia\":0}"))
                 .andExpect(status().isBadRequest());
+
+        mvc.perform(
+                        post("/polizas")
+                                .header("x-api-key", "123456")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                        {"tipo":"INDIVIDUAL","canonMensual":1500000,"inicioVigencia":"2026-03-01","mesesVigencia":12}
+                                        """))
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test
@@ -84,6 +95,9 @@ class PolizaApiTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"descripcion\":\"otro\"}"))
                 .andExpect(status().isBadRequest());
+        mvc.perform(post("/riesgos/1/cancelar").header("x-api-key", "123456"))
+                .andExpect(status().isBadRequest());
+
         mvc.perform(post("/polizas/2/cancelar").header("x-api-key", "123456"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("CANCELADA"));

@@ -43,6 +43,9 @@ public class PolizaService {
             LocalDate inicioVigencia,
             Integer mesesVigencia,
             String riesgoInicial) {
+        if (tipo == TipoPoliza.INDIVIDUAL && (riesgoInicial == null || riesgoInicial.isBlank())) {
+            throw new NegocioException("Una póliza individual requiere un riesgo inicial");
+        }
         Poliza poliza = new Poliza(tipo, canonMensual, inicioVigencia, mesesVigencia);
         if (riesgoInicial != null && !riesgoInicial.isBlank()) {
             poliza.agregarRiesgo(new Riesgo(riesgoInicial.trim()));
@@ -105,6 +108,9 @@ public class PolizaService {
                         .orElseThrow(() -> new NoEncontradoException("Riesgo no encontrado"));
         if (riesgo.getEstado() == EstadoRiesgo.CANCELADO)
             throw new NegocioException("El riesgo ya está cancelado");
+        if (riesgo.getPoliza().getTipo() == TipoPoliza.INDIVIDUAL) {
+            throw new NegocioException("Una póliza individual se cancela junto con su único riesgo");
+        }
         core.enviarActualizacion(riesgo.getPoliza().getId());
         riesgo.cancelar();
         return RiesgoDto.of(riesgo);
