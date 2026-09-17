@@ -41,8 +41,12 @@ public class PolizaService {
             TipoPoliza tipo,
             BigDecimal canonMensual,
             LocalDate inicioVigencia,
-            Integer mesesVigencia) {
+            Integer mesesVigencia,
+            String riesgoInicial) {
         Poliza poliza = new Poliza(tipo, canonMensual, inicioVigencia, mesesVigencia);
+        if (riesgoInicial != null && !riesgoInicial.isBlank()) {
+            poliza.agregarRiesgo(new Riesgo(riesgoInicial.trim()));
+        }
         return PolizaDto.of(polizas.save(poliza));
     }
 

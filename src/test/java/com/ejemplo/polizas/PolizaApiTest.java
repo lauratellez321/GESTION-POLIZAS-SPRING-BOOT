@@ -38,7 +38,8 @@ class PolizaApiTest {
                                           "tipo": "INDIVIDUAL",
                                           "canonMensual": 1500000.00,
                                           "inicioVigencia": "2026-03-01",
-                                          "mesesVigencia": 12
+                                          "mesesVigencia": 12,
+                                          "riesgoInicial": "Apartamento 303"
                                         }
                                         """))
                 .andExpect(status().isCreated())

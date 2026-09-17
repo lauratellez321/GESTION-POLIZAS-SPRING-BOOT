@@ -27,7 +27,7 @@ public class PolizaController {
                                 body.tipo(),
                                 body.canonMensual(),
                                 body.inicioVigencia(),
-                                body.mesesVigencia()));
+                                body.mesesVigencia(), body.riesgoInicial()));
     }
 
     @GetMapping("/polizas")

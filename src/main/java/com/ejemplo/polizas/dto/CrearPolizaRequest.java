@@ -13,4 +13,5 @@ public record CrearPolizaRequest(
         @NotNull TipoPoliza tipo,
         @NotNull @DecimalMin(value = "0.01") BigDecimal canonMensual,
         @NotNull LocalDate inicioVigencia,
-        @NotNull @Min(1) Integer mesesVigencia) {}
+        @NotNull @Min(1) Integer mesesVigencia,
+        String riesgoInicial) {}
